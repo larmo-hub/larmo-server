@@ -5,6 +5,7 @@ namespace FP\Larmo\Infrastructure\Adapter;
 use FP\Larmo\Domain\Service\FiltersCollection;
 use FP\Larmo\Domain\Service\MessageCollection;
 use FP\Larmo\Domain\ValueObject\UniqueId;
+use FP\Larmo\Infrastructure\Service\MessageCollectionConversion;
 use FP\Larmo\Infrastructure\Service\MessageStorageProvider;
 use FP\Larmo\Infrastructure\Factory\Message as FactoryMessage;
 
@@ -30,7 +31,8 @@ class MongoMessageStorageProvider implements MessageStorageProvider {
 
     public function store(MessageCollection $messages)
     {
-        return $this->db->messages->batchInsert($this->convertMessageCollectionToArray($messages));
+        $collectionConverter = new MessageCollectionConversion($messages);
+        return $this->db->messages->batchInsert($collectionConverter->getCollectionAsArray());
     }
 
     public function setFilters(FiltersCollection $filters)
@@ -46,30 +48,5 @@ class MongoMessageStorageProvider implements MessageStorageProvider {
             $messageFactory = new FactoryMessage($uniqueId);
             $messages[] = $messageFactory->fromArray($message);
         }
-    }
-
-    private function convertMessageCollectionToArray(MessageCollection $messages)
-    {
-        $outputArray = [];
-
-        foreach($messages as $message) {
-            $messageArray = [
-                'messageId' => $message->getMessageId(),
-                'source' => explode('.', $message->getType())[0],
-                'type' => $message->getType(),
-                'timestamp' => $message->getTimestamp(),
-                'author' => [
-                    'fullName' => $message->getAuthor()->getFullName(),
-                    'nickName' => $message->getAuthor()->getNickName(),
-                    'email' => $message->getAuthor()->getEmail()
-                ],
-                'body' => $message->getBody(),
-                'extras' => $message->getExtras()
-            ];
-
-            array_push($outputArray, $messageArray);
-        }
-
-        return $outputArray;
     }
 }
