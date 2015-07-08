@@ -66,8 +66,9 @@ try {
     http_response_code(500);
 } catch (Exception $e) {
     /* Unpredicted error */
-    $response['message'] = 'Something wrong';
+    $response['message'] = 'Something wrong: ' . $e->getMessage();
     trigger_error($e->getMessage(), E_USER_WARNING);
 } finally {
+    file_put_contents('php://stderr', $response['message']);
     echo json_encode($response);
 }

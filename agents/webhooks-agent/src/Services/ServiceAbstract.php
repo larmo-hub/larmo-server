@@ -27,8 +27,6 @@ abstract class ServiceAbstract implements ServiceDataInterface {
                 $event = new $eventClass($data);
                 return $event->getMessages();
             }
-
-            throw new \InvalidArgumentException;
         }
 
         throw new \InvalidArgumentException;
