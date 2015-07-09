@@ -1,0 +1,14 @@
+<div class="col-sm-1 col-xs-12 text-right travis">
+    <i class="fa fa-2x {{message.extras.state | travisSetStatusIcon}}" title="Travis CI {{message.extras.state}}"></i>
+</div>
+<div class="col-sm-11 col-xs-12 content">
+    <div class="metadata">
+        {{message.body}} {{message.extras.state}}
+        <a href="{{message.extras.build_url}}" target="_blank">#{{message.extras.number_build}}</a>
+        <span class="metadata-date">{{message.timestamp | date:"dd MMM yyyy 'at' HH:mm:ss"}}</span>
+    </div>
+    <div class="well well-sm body">
+        Build triggered by <span ng-bind-html="message.author | displayName"></span>
+        for <span ng-bind-html="message | travisSetDescription"></span>
+    </div>
+</div>

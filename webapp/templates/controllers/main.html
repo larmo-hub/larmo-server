@@ -1,10 +1,5 @@
 <div ng-include="'templates/common/filters.html'"></div>
 
 <div ng-repeat="message in messages" class="{{'row message source-' + message.source}}">
-    <div class="col-sm-1 col-xs-2 source">
-        <i class="{{'fa fa-2x fa-' + message.source}}" title="{{message.source}}"></i>
-    </div>
-    <div class="col-sm-11 col-xs-10 content">
-        <div ng-include=" 'templates/sources/' + message.source + '.html' "></div>
-    </div>
+    <div ng-include=" 'templates/sources/' + message.source + '.html' "></div>
 </div>

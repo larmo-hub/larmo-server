@@ -1,8 +1,13 @@
-<div class="metadata">
-    <span ng-bind-html='message.author | githubUser'></span>
-    {{message.body}}
-    <span ng-bind-html='message | githubAction'></span>
-    <span class="metadata-date">{{message.timestamp | date:"dd MMM yyyy 'at' HH:mm:ss"}}</span>
+<div class="col-sm-1 col-xs-12 text-right source">
+    <i class="{{'fa fa-2x fa-' + message.source}}" title="{{message.source}}"></i>
 </div>
-<div class="well well-sm body" ng-init="messageText = (message | githubExtendedMessage)" ng-show="messageText.length > 0" ng-bind-html='messageText'>
+<div class="col-sm-11 col-xs-12 content">
+    <div class="metadata">
+        <span ng-bind-html='message.author | githubUser'></span>
+        {{message.body}}
+        <span ng-bind-html='message | githubAction'></span>
+        <span class="metadata-date">{{message.timestamp | date:"dd MMM yyyy 'at' HH:mm:ss"}}</span>
+    </div>
+    <div class="well well-sm body" ng-init="messageText = (message | githubExtendedMessage)" ng-show="messageText.length > 0" ng-bind-html='messageText'>
+    </div>
 </div>
