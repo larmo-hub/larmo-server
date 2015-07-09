@@ -33,6 +33,7 @@ notifications:
       - team.mvp@future-processing.com
     on_success: change
     on_failure: always
+  webhooks: http://morning-escarpment-1297.herokuapp.com/travis
 
 env:
   - MONGO_DB_USER=travis MONGO_DB_PASSWORD=test MONGO_DB_PORT=27017 MONGO_DB_URL=127.0.0.1 MONGO_DB_NAME=db_test
