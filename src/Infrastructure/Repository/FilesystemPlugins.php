@@ -16,6 +16,7 @@ use FP\Larmo\Domain\Repository\Plugins as PluginsRepository;
  * should be capitalized. Each plugin should have PluginManifest
  * class that will implement PluginManifestInterface.
  *
+ * @property  app
  * @package FP\Larmo\Infrastructure\Adapter
  */
 class FilesystemPlugins implements PluginsRepository
@@ -26,10 +27,16 @@ class FilesystemPlugins implements PluginsRepository
     private $iterator;
 
     /**
+     * @var \Silex\Application
+     */
+    private $app;
+
+    /**
      * @param \DirectoryIterator $iterator
      */
-    public function __construct(\DirectoryIterator $iterator)
+    public function __construct(\Silex\Application $app, \DirectoryIterator $iterator)
     {
+        $this->app = $app;
         $this->iterator = $iterator;
     }
 
@@ -47,10 +54,12 @@ class FilesystemPlugins implements PluginsRepository
                 $pluginClass = $namespace . $pluginName . $pluginManifest;
 
                 if (class_exists($pluginClass)) {
-                    $plugin = new $pluginClass();
+                    $plugin = new $pluginClass($this->app);
                     $plugins[] = $plugin;
                 }
             }
         }
+
+        return $plugins;
     }
 }

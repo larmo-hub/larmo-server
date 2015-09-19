@@ -30,7 +30,10 @@
     "behat": "php vendor/behat/behat/bin/behat --config tests/features/behat.yml"
   },
   "autoload": {
-    "psr-4": {"FP\\Larmo\\": "src/"}
+    "psr-4": {
+      "FP\\Larmo\\": "src/",
+      "FP\\Larmo\\Plugin\\": "plugins/"
+    }
   },
   "require": {
     "php": ">=5.5.0",

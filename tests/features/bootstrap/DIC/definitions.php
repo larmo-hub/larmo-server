@@ -3,14 +3,15 @@
 $container = new \Pimple;
 
 // Configuration
-$container['config.path.plugins'] = __DIR__ . '/../../../../src/Plugin';
+$container['config.path.plugins'] = __DIR__ . '/../../../../plugins';
 $container['config.path.authinfo'] = __DIR__ . '/../Fixtures/authinfo.ini';
 
 // Definitions
 $container['plugins'] = $container->share(function ($container) {
+    $app = new \Silex\Application;
     $pluginsCollection = new \FP\Larmo\Domain\Service\PluginsCollection;
     $directoryIterator = new \DirectoryIterator($container['config.path.plugins']);
-    $pluginsRepository = new \FP\Larmo\Infrastructure\Repository\FilesystemPlugins($directoryIterator);
+    $pluginsRepository = new \FP\Larmo\Infrastructure\Repository\FilesystemPlugins($app, $directoryIterator);
     $pluginsRepository->retrieve($pluginsCollection);
 
     return new \FP\Larmo\Application\PluginService($pluginsCollection);
@@ -27,9 +28,9 @@ $container['json_schema_validation'] = function () {
 $container['packet_validation.service'] = function ($container) {
     $validator = $container['json_schema_validation'];
     $authinfo = $container['authinfo'];
-    $plugins = $container['plugins'];
+    $sources = [['id' => 'github']];
 
-    return new \FP\Larmo\Application\PacketValidationService($validator, $authinfo, $plugins);
+    return new \FP\Larmo\Application\PacketValidationService($validator, $authinfo, $sources);
 };
 
 $container['metadata.entity'] = $container->protect(function ($metadata, $authinfo) {
