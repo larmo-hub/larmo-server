@@ -12,17 +12,17 @@ final class PacketValidationService
     private $packet;
     private $validator;
     private $authinfo;
-    private $plugins;
+    private $availableSources;
     private $errors = [];
 
     public function __construct(
         JsonSchemaValidation $schemaValidation,
         AuthInfoInterface $authinfo,
-        PluginService $plugins
+        array $availableSources
     ) {
         $this->validator = $schemaValidation;
         $this->authinfo = $authinfo;
-        $this->plugins = $plugins;
+        $this->availableSources = $availableSources;
     }
 
     public function setSchemaFromFile($schemaFilePath)
@@ -72,7 +72,7 @@ final class PacketValidationService
             return false;
         }
 
-        if (!$this->plugins->checkPluginIsRegistered($this->packet->metadata->source)) {
+        if (array_search($this->packet->metadata->source, array_column($this->availableSources, 'id')) === false) {
             $this->errors[] = [
                 'property' => 'metadata.source',
                 'message' => 'the source is invalid'

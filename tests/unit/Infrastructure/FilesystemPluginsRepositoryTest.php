@@ -11,7 +11,7 @@ class FilesystemPluginRepositoryTest extends PHPUnit_Framework_TestCase
      */
     public function pluginsDirectoryExists()
     {
-        $path = __DIR__ . '/../../../src/Plugin';
+        $path = __DIR__ . '/../../../plugins';
         $path = realpath($path);
 
         $this->assertNotEmpty($path, 'Please fix path to plugins directory');
@@ -26,7 +26,7 @@ class FilesystemPluginRepositoryTest extends PHPUnit_Framework_TestCase
      */
     public function filesystemPluginsRepositoryWillLoadPlugins($path)
     {
-        $path = __DIR__ . '/../../../src/Plugin';
+        $path = __DIR__ . '/../../../plugins';
         $path = realpath($path);
 
         $app = $this->getMockBuilder('\Silex\Application')->disableOriginalConstructor()->getMock();

@@ -3,34 +3,38 @@
 use FP\Larmo\Application\Adapter\VendorJsonSchemaValidation;
 use FP\Larmo\Application\PacketValidationService;
 use FP\Larmo\Infrastructure\Adapter\PhpArrayAuthInfoProvider;
-use FP\Larmo\Infrastructure\Repository\FilesystemPlugins as FilesystemPluginsRepository;
-use FP\Larmo\Domain\Service\PluginsCollection;
-use FP\Larmo\Application\PluginService;
-use FP\Larmo\Domain\Aggregate\Packet;
-use FP\Larmo\Domain\Entity\Metadata;
-use FP\Larmo\Domain\Service\MessageCollection;
 
 class PacketValidationServiceTest extends PHPUnit_Framework_TestCase
 {
     private $packetValidation;
     private $schema;
 
-    public function setup()
+    protected function setup()
     {
-        $this->schema = __DIR__ . '/../../../config/packet.scheme.json';
-
         $jsonValidator = new VendorJsonSchemaValidation();
-        $authinfo = new PhpArrayAuthInfoProvider(['webhooks' => 'NJS78350hi[2-0,capos0q2u5noafuig']);
+        $authinfo = new PhpArrayAuthInfoProvider(['agent' => 'key']);
+        $availableSources = [['id' => 'test']];
 
-        $pluginRepository = $this->getMockBuilder('\FP\Larmo\Infrastructure\Repository\FilesystemPluginsRepository')
-            ->setMethods(array('retrieve'))
-            ->getMock();
+        $this->schema = __DIR__ . '/../../../config/packet.scheme.json';
+        $this->packetValidation = new PacketValidationService($jsonValidator, $authinfo, $availableSources);
+    }
 
-        $pluginCollection = new PluginsCollection;
-        $pluginRepository->retrieve($pluginCollection);
-        $pluginsService = new PluginService($pluginCollection);
+    protected function getPacketMock()
+    {
+        $authinfo = new stdClass();
+        $authinfo->agent = 'agent';
+        $authinfo->auth = 'key';
 
-        $this->packetValidation = new PacketValidationService($jsonValidator, $authinfo, $pluginsService);
+        $metadata = new stdClass();
+        $metadata->timestamp = time();
+        $metadata->source = 'test';
+        $metadata->authinfo = $authinfo;
+
+        $packet = new stdClass();
+        $packet->metadata = $metadata;
+        $packet->data = [];
+
+        return $packet;
     }
 
     /**
@@ -47,19 +51,26 @@ class PacketValidationServiceTest extends PHPUnit_Framework_TestCase
      */
     public function setPacketWorks()
     {
-        $authInfoValidator = $this->getMockBuilder('\FP\Larmo\Domain\Service\AuthInfoInterface')->setMethods(array('validate'))->getMock();
-        $metadata = new Metadata($authInfoValidator, time(), 'AUTH_INFO', 'SOURCE');
-        $messages = new MessageCollection();
-        $packet = new Packet($messages, $metadata);
-
-        $this->assertInstanceOf(PacketValidationService::class, $this->packetValidation->setPacket($packet));
+        $this->assertInstanceOf(PacketValidationService::class, $this->packetValidation->setPacket([]));
     }
 
+    /**
+     * @test
+     */
     public function validatePacketShouldWorks()
     {
+        $packet = $this->getPacketMock();
+
+        $this->packetValidation->setSchemaFromFile($this->schema);
+        $this->packetValidation->setPacket($packet);
+        $this->packetValidation->isValid();
+
         $this->assertTrue($this->packetValidation->isValid());
     }
 
+    /**
+     * @test
+     */
     public function errorsAreArray()
     {
         $this->assertTrue(is_array($this->packetValidation->getErrors()));
