@@ -8,9 +8,10 @@ $container['config.path.authinfo'] = __DIR__ . '/../Fixtures/authinfo.ini';
 
 // Definitions
 $container['plugins'] = $container->share(function ($container) {
+    $app = new \Silex\Application;
     $pluginsCollection = new \FP\Larmo\Domain\Service\PluginsCollection;
     $directoryIterator = new \DirectoryIterator($container['config.path.plugins']);
-    $pluginsRepository = new \FP\Larmo\Infrastructure\Repository\FilesystemPlugins($directoryIterator);
+    $pluginsRepository = new \FP\Larmo\Infrastructure\Repository\FilesystemPlugins($app, $directoryIterator);
     $pluginsRepository->retrieve($pluginsCollection);
 
     return new \FP\Larmo\Application\PluginService($pluginsCollection);
