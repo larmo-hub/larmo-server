@@ -2,13 +2,10 @@
 
 namespace FP\Larmo\Plugin\MongoStorage;
 
-;
-
 use FP\Larmo\Domain\ValueObject\UniqueId;
 use FP\Larmo\Domain\Service\FiltersCollection;
 use FP\Larmo\Domain\Service\MessageCollection;
 use FP\Larmo\Domain\Repository\Messages as MessagesRepository;
-
 use FP\Larmo\Infrastructure\Factory\Message as MessageFactory;
 
 final class MongoDbMessages implements MessagesRepository
@@ -35,9 +32,11 @@ final class MongoDbMessages implements MessagesRepository
      */
     public function store(MessageCollection $messages)
     {
-        $response = $this->storage->batchInsert($this->collectionName, $this->convertMessageCollectionToArray($messages));
+        $response = $this->storage->batchInsert($this->collectionName,
+            $this->convertMessageCollectionToArray($messages));
         if (is_array($response) && !empty($response['err'])) {
             $this->lastErrorMsg = $response['err'];
+
             return false;
         } else {
             return true;
@@ -69,6 +68,7 @@ final class MongoDbMessages implements MessagesRepository
             $retrieved->sort(array($this->defaultSortBy => -1));
         } catch (\MongoException $e) {
             $this->lastErrorMsg = $e->getMessage();
+
             return false;
         }
 

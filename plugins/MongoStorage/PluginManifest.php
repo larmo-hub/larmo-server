@@ -2,17 +2,12 @@
 
 namespace FP\Larmo\Plugin\MongoStorage;
 
-use FP\Larmo\Domain\Service\PluginManifestInterface;
+use FP\Larmo\Domain\Service\PluginManifest as PluginManifestAbstract;
 
-final class PluginManifest implements PluginManifestInterface
+final class PluginManifest extends PluginManifestAbstract
 {
     private $ident = 'mongodb';
     private $name = 'MongoDB Storage';
-
-    /**
-     * @var array
-     */
-    private $config;
 
     /**
      * @var MongoDbStorage|false
@@ -25,32 +20,27 @@ final class PluginManifest implements PluginManifestInterface
     private $repository;
 
     /**
-     * @todo load config from file
+     * @param $app \Silex\Application
      * @todo lazy loading for storage / repository
      */
-    public function __construct()
+    public function __construct($app)
     {
-        $this->config = [
-            'db_user' => getenv('MONGO_DB_USER'),
-            'db_password' => getenv('MONGO_DB_PASSWORD'),
-            'db_url' => getenv('MONGO_DB_URL'),
-            'db_name' => getenv('MONGO_DB_NAME'),
-            'db_port' => getenv('MONGO_DB_PORT'),
-            'db_options' => []
-        ];
+        parent::__construct($app);
+
+        $config = $app['config.mongo_db'];
 
         try {
             $this->storage = new MongoDbStorage(
-                $this->config['db_url'],
-                $this->config['db_port'],
-                $this->config['db_user'],
-                $this->config['db_password'],
-                $this->config['db_name'],
-                $this->config['db_options']
+                $config['db_url'],
+                $config['db_port'],
+                $config['db_user'],
+                $config['db_password'],
+                $config['db_name'],
+                $config['db_options']
             );
 
             $this->repository = new MongoDbMessages($this->storage);
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException $exception) {
             $this->repository = false;
         }
     }

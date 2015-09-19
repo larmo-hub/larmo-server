@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 $app->get('/latestMessages', function (Request $request) use ($app) {
-    $filters = $app['filters.service'];
+    $filters = $app['service.filters'];
 
     try {
         $filters->addFilters($request->query->all());
@@ -15,7 +15,7 @@ $app->get('/latestMessages', function (Request $request) use ($app) {
         return $app->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
     }
 
-    $messages = $app['messages.factory']->createEmptyCollection();
+    $messages = $app['factory.messages']->createEmptyCollection();
 
     $retrieveMsgEvent = new RetrieveMessagesEvent();
     $retrieveMsgEvent->setMessages($messages);

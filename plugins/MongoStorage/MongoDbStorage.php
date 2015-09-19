@@ -18,7 +18,7 @@ final class MongoDbStorage
             $mongoClient = new \MongoClient($server, $options);
             $this->connection = $mongoClient->selectDB($db);
         } catch (\MongoConnectionException $e) {
-            throw new \RuntimeException('Could not connect to MongoDB: '. $e->getMessage());
+            throw new \RuntimeException('Could not connect to MongoDB: ' . $e->getMessage());
         }
     }
 
