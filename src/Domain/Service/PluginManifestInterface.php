@@ -2,10 +2,8 @@
 
 namespace FP\Larmo\Domain\Service;
 
-
 interface PluginManifestInterface
 {
-
     /**
      * @return string
      */

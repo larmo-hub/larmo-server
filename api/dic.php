@@ -4,7 +4,7 @@
 $app['plugins'] = $app->share(function ($app) {
     $pluginsCollection = new \FP\Larmo\Domain\Service\PluginsCollection;
     $directoryIterator = new \DirectoryIterator($app['config.path.plugins']);
-    $pluginsRepository = new \FP\Larmo\Infrastructure\Repository\FilesystemPlugins($directoryIterator);
+    $pluginsRepository = new \FP\Larmo\Infrastructure\Repository\FilesystemPlugins($app, $directoryIterator);
     $pluginsRepository->retrieve($pluginsCollection);
 
     $pluginService = new \FP\Larmo\Application\PluginService($pluginsCollection);
