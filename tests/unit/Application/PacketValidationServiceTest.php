@@ -17,14 +17,30 @@ class PacketValidationServiceTest extends PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $path = __DIR__ . '/../../../';
+       # $path = __DIR__ . '/../../../';
         $this->schema = __DIR__ . '/../../../config/packet.scheme.json';
 
         $jsonValidator = new VendorJsonSchemaValidation();
         $authinfo = new PhpArrayAuthInfoProvider(['webhooks' => 'NJS78350hi[2-0,capos0q2u5noafuig']);
 
-        $directoryIterator = new \DirectoryIterator($path . 'src/Plugin');
-        $pluginRepository = new FilesystemPluginsRepository($directoryIterator);
+        // Create a stub for the SomeClass class.
+        $pluginRepository = $this->getMockBuilder('\FP\Larmo\Infrastructure\Repository\FilesystemPluginsRepository')
+            ->setMethods(array('retrieve'))
+            ->getMock();
+
+
+      #  $pluginRepository = $this->getMockBuilder('')
+       #     ->disableOriginalConstructor()
+        #    ->getMock();
+#var_dump($pluginRepository); exit;
+
+        // Configure the stub.
+      #  $pluginRepository->method('retrive')
+      #      ->willReturn([]);
+
+
+       # $directoryIterator = new \DirectoryIterator($path . 'src/Plugin');
+
         $pluginCollection = new PluginsCollection;
         $pluginRepository->retrieve($pluginCollection);
         $pluginsService = new PluginService($pluginCollection);

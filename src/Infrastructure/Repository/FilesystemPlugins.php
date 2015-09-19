@@ -59,5 +59,7 @@ class FilesystemPlugins implements PluginsRepository
                 }
             }
         }
+
+        return $plugins;
     }
 }
