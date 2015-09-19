@@ -34,3 +34,45 @@ $: composer phplint
 $: composer test
 $: composer behat
 ```
+
+## How to run *Larmo Server*
+
+### Using Docker
+
+Navigate from command line to *Larmo Server* directory and run:
+
+```bash
+$: cd run/
+$: docker-compose up -d
+```
+
+Access to *Larmo Server*:
+
+- [http://localhost:8181/](http://localhost:8181/)
+
+### Using Vagrant
+
+Setup configuration file *config/parameters.php* (if a file does not exist then create it). Content:
+
+```php
+<?php
+
+$app['config.mongo_db'] = [
+    'db_user' => '',
+    'db_password' => '',
+    'db_name' => 'larmo-server',
+    'db_url' => '127.0.0.1',
+    'db_port' => 27017,
+    'db_options' => []
+];
+```
+
+Navigate from command line to this directory and run:
+
+```bash
+$: vagrant up
+```
+
+Then you will access to *Larmo Server* by:
+
+- [http://localhost:8181/](http://localhost:8181/)

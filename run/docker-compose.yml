@@ -1,22 +1,12 @@
-app:
-  build: webapp
-  ports:
-   - "5000:8080"
-  volumes:
-   - ../webapp:/data/larmo-webapp/
-  working_dir: /data/larmo-webapp
-  environment:
-   - API_URL=http://0.0.0.0:5100
-
 hub:
   build: hub
   ports:
-   - "5100:80"
+   - "8181:80"
   volumes:
    - ../hub:/data/larmo-hub/
   environment:
    - MONGO_DB_URL=mongo
-   - MONGO_DB_NAME=hubtest
+   - MONGO_DB_NAME=larmo-server
    - MONGO_DB_PORT=27017
   links:
    - mongo
