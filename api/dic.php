@@ -9,16 +9,10 @@ $app['provider.authinfo'] = $app->share(function ($app) {
 });
 
 $app['service.plugins'] = $app->share(function ($app) {
-    $pluginsCollection = new \FP\Larmo\Domain\Service\PluginsCollection;
     $directoryIterator = new \DirectoryIterator($app['config.path.plugins']);
-    $pluginsRepository = new \FP\Larmo\Infrastructure\Repository\FilesystemPlugins($app, $directoryIterator);
-    $pluginsRepository->retrieve($pluginsCollection);
-
+    $pluginsRepository = new \FP\Larmo\Infrastructure\Repository\FilesystemPlugins($directoryIterator);
+    $pluginsCollection = $pluginsRepository->retrieve();
     $pluginService = new \FP\Larmo\Application\PluginService($pluginsCollection);
-
-    foreach ($pluginService->getPluginSubscribers() as $subscriber) {
-        $app['dispatcher']->addSubscriber($subscriber);
-    }
 
     return $pluginService;
 });

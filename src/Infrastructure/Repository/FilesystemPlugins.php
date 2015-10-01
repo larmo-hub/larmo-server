@@ -27,24 +27,17 @@ class FilesystemPlugins implements PluginsRepository
     private $iterator;
 
     /**
-     * @var \Silex\Application
-     */
-    private $app;
-
-    /**
      * @param \DirectoryIterator $iterator
      */
-    public function __construct(\Silex\Application $app, \DirectoryIterator $iterator)
+    public function __construct(\DirectoryIterator $iterator)
     {
-        $this->app = $app;
         $this->iterator = $iterator;
     }
 
-    /**
-     * @param PluginsCollection $plugins
-     */
-    public function retrieve(PluginsCollection $plugins)
+    public function retrieve()
     {
+        $plugins = new PluginsCollection;
+
         $namespace = '\\FP\\Larmo\\Plugin\\';
         $pluginManifest = '\\PluginManifest';
 
@@ -54,8 +47,7 @@ class FilesystemPlugins implements PluginsRepository
                 $pluginClass = $namespace . $pluginName . $pluginManifest;
 
                 if (class_exists($pluginClass)) {
-                    $plugin = new $pluginClass($this->app);
-                    $plugins[] = $plugin;
+                    $plugins[$pluginName] = $pluginClass;
                 }
             }
         }

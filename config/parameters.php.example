@@ -1,8 +1,1 @@
 <?php
-
-$app['config.mongo_db']['db_user'] = '';
-$app['config.mongo_db']['db_password'] = '';
-$app['config.mongo_db']['db_name'] = '';
-$app['config.mongo_db']['db_url'] = '';
-$app['config.mongo_db']['db_port'] = '';
-$app['config.mongo_db']['db_options'] = [];

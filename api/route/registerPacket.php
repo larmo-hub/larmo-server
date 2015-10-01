@@ -30,11 +30,11 @@ $app->post('/registerPacket', function (Request $request) use ($app) {
     } else {
         return $app->json(['message' => $packetValidation->getErrors()], Response::HTTP_BAD_REQUEST);
     }
-})
-    ->before(function (Request $request, Application $app) {
+})->before(function (Request $request, Application $app) {
 
-        // make sure there is a plugin that will be able to handle this request
-        if (!$app['dispatcher']->hasListeners(LarmoEvents::INCOMING_MESSAGE)) {
-            return $app->json(['message' => 'Hub is not yet configured to handle incoming messages.'], Response::HTTP_BAD_REQUEST);
-        }
-    });
+    // make sure there is a plugin that will be able to handle this request
+    if (!$app['dispatcher']->hasListeners(LarmoEvents::INCOMING_MESSAGE)) {
+        return $app->json(['message' => 'Hub is not yet configured to handle incoming messages.'],
+            Response::HTTP_BAD_REQUEST);
+    }
+});

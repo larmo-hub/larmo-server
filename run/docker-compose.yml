@@ -1,7 +1,7 @@
 hub:
   build: hub
   ports:
-   - "8181:80"
+   - "5100:80"
   volumes:
    - ../hub:/data/larmo-hub/
   environment:

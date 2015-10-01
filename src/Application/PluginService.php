@@ -22,19 +22,26 @@ final class PluginService
     private $plugins;
     private $pluginNames = array();
     private $subscribers = array();
+    private $availablePlugins = array();
 
     public function __construct(PluginsCollection $collection)
     {
-        $this->plugins = $collection;
+        $this->availablePlugins = $collection;
+    }
 
-        foreach ($this->plugins as $plugin) {
+    public function initPlugins() {
+        foreach ($this->availablePlugins as $pluginName => $pluginClass) {
+            $plugin = new $pluginClass;
             $ident = $plugin->getIdentifier();
+
             if ($this->checkPluginIsRegistered($ident)) {
                 throw new PluginException(sprintf('Plugin "%s" is already registered!', $ident));
             }
-            $this->pluginNames[$ident] = $plugin->getDisplayName();
-            $subscriber = $plugin->getEventSubscriber();
 
+            $this->plugins[] = $plugin;
+            $this->pluginNames[$ident] = $plugin->getDisplayName();
+
+            $subscriber = $plugin->getEventSubscriber();
             if ($subscriber instanceof EventSubscriberInterface) {
                 $this->subscribers[] = $subscriber;
             }

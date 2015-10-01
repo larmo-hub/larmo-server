@@ -31,9 +31,4 @@ final class MongoDbStorage
     {
         return $this->connection->{$collection}->find($find);
     }
-
-    public function __destruct()
-    {
-
-    }
 }
