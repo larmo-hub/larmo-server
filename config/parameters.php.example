@@ -1,1 +1,5 @@
 <?php
+
+putenv('MONGO_DB_URL=localhost');
+putenv('MONGO_DB_NAME=larmo-server');
+putenv('MONGO_DB_PORT=27017');
