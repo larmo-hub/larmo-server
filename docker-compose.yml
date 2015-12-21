@@ -1,5 +1,5 @@
 hub:
-  build: ./run/server
+  build: ./run/docker/server
   ports:
    - "5100:80"
   volumes:
@@ -14,6 +14,6 @@ hub:
 mongo:
   image: mongo
   volumes:
-   - ./run/mongo/data:/data/db
+   - ./run/docker/mongo/data:/data/db
   ports:
     - "27018:27017"

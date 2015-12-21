@@ -10,11 +10,6 @@ final class PluginManifest implements PluginManifestInterface
     private $name = 'MongoDB Storage';
 
     /**
-     * @var array
-     */
-    private $config;
-
-    /**
      * @var MongoDbStorage|false
      */
     private $storage;
@@ -25,28 +20,18 @@ final class PluginManifest implements PluginManifestInterface
     private $repository;
 
     /**
-     * @todo load config from file
      * @todo lazy loading for storage / repository
      */
     public function __construct()
     {
-        $this->config = [
-            'db_user' => getenv('MONGO_DB_USER'),
-            'db_password' => getenv('MONGO_DB_PASSWORD'),
-            'db_url' => getenv('MONGO_DB_URL'),
-            'db_name' => getenv('MONGO_DB_NAME'),
-            'db_port' => getenv('MONGO_DB_PORT'),
-            'db_options' => []
-        ];
-
         try {
             $this->storage = new MongoDbStorage(
-                $this->config['db_url'],
-                $this->config['db_port'],
-                $this->config['db_user'],
-                $this->config['db_password'],
-                $this->config['db_name'],
-                $this->config['db_options']
+                getenv('MONGO_DB_URL'),
+                getenv('MONGO_DB_PORT'),
+                getenv('MONGO_DB_USER'),
+                getenv('MONGO_DB_PASSWORD'),
+                getenv('MONGO_DB_NAME'),
+                []
             );
 
             $this->repository = new MongoDbMessages($this->storage);

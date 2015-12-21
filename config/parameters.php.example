@@ -1,7 +1,5 @@
 <?php
 
-$app['config.mongo_db']['db_user'] = '';
-$app['config.mongo_db']['db_password'] = '';
-$app['config.mongo_db']['db_name'] = '';
-$app['config.mongo_db']['db_url'] = '';
-$app['config.mongo_db']['db_port'] = '';
+putenv('MONGO_DB_URL=localhost');
+putenv('MONGO_DB_NAME=larmo-server');
+putenv('MONGO_DB_PORT=27017');
