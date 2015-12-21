@@ -24,8 +24,8 @@ $app['filters.service'] = $app->share(function () {
     return new \FP\Larmo\Domain\Service\FiltersCollection;
 });
 
-$app['authinfo'] = $app->share(function ($app) {
-    return new \FP\Larmo\Infrastructure\Adapter\IniFileAuthInfoProvider($app['config.path.authinfo']);
+$app['adapter.authinfo'] = $app->share(function ($app) {
+    return new \FP\Larmo\Infrastructure\Adapter\PhpArrayAuthInfoProvider($app['config.authinfo']);
 });
 
 $app['json_schema_validation'] = function () {
@@ -34,7 +34,7 @@ $app['json_schema_validation'] = function () {
 
 $app['packet_validation.service'] = function ($app) {
     $validator = $app['json_schema_validation'];
-    $authinfo = $app['authinfo'];
+    $authinfo = $app['adapter.authinfo'];
     $plugins = $app['plugins'];
 
     return new \FP\Larmo\Application\PacketValidationService($validator, $authinfo, $plugins);

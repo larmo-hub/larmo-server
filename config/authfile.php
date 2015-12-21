@@ -1,7 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: apietka
- * Date: 2015-12-21
- * Time: 23:55
- */
+
+$app['config.authinfo'] = [
+    'webhooks' => 'NJS78350hi[2-0,capos0q2u5noafuig'
+];
