@@ -2,7 +2,7 @@
 
 use FP\Larmo\Application\Adapter\VendorJsonSchemaValidation;
 use FP\Larmo\Application\PacketValidationService;
-use FP\Larmo\Infrastructure\Adapter\IniFileAuthInfoProvider;
+use FP\Larmo\Infrastructure\Adapter\PhpArrayAuthInfoProvider;
 use FP\Larmo\Infrastructure\Repository\FilesystemPlugins as FilesystemPluginsRepository;
 use FP\Larmo\Domain\Service\PluginsCollection;
 use FP\Larmo\Application\PluginService;
@@ -21,7 +21,7 @@ class PacketValidationServiceTest extends PHPUnit_Framework_TestCase
         $this->schema = __DIR__ . '/../../../config/packet.scheme.json';
 
         $jsonValidator = new VendorJsonSchemaValidation();
-        $authinfo = new IniFileAuthInfoProvider($path . 'config/authinfo.ini');
+        $authinfo = new PhpArrayAuthInfoProvider(['webhooks' => 'NJS78350hi[2-0,capos0q2u5noafuig']);
 
         $directoryIterator = new \DirectoryIterator($path . 'src/Plugin');
         $pluginRepository = new FilesystemPluginsRepository($directoryIterator);
