@@ -31,6 +31,42 @@ GET /latestMessages
 GET /availableSources
 ```
 
+## How to run *Larmo Server*
+
+### Using Docker
+
+Navigate from command line to *Larmo Server* directory and run:
+
+```bash
+$: docker-compose up -d
+```
+
+Access to *Larmo Server*:
+
+- [http://localhost:5100/](http://localhost:5100/)
+
+### Using Vagrant
+
+Setup configuration file *config/parameters.php* (if a file does not exist then create it). Content:
+
+```php
+<?php
+
+putenv('MONGO_DB_URL=localhost');
+putenv('MONGO_DB_NAME=larmo-server');
+putenv('MONGO_DB_PORT=27017');
+```
+
+Navigate from command line to *Larmo Server* directory and run:
+
+```bash
+$: vagrant up
+```
+
+Access to *Larmo Server*:
+
+- [http://localhost:5100/](http://localhost:5100/)
+
 ## Composer scripts for *Larmo Server*
 
 ```bash
@@ -43,33 +79,33 @@ $: composer behat
 
 ```json
 {
- "metadata"   : {
-  "source"    : "github",
-  "auth"      : {"agent" : "agent_webhooks", "auth" : "auth_key"},
-  "timestamp" : 1434723490
- },
- "data": [
-  {
-    "type": "commit",
-    "timestamp": "2015-06-22T12:45:56+02:00",
-    "author": {
-      "name": "Test Test",
-      "email": "test@test.test",
-      "login": "test"
-    },
-    "message": "Test Test added commit: \"Added new file\"",
-    "extras": {
-      "id": "8849ee0814c8ccd73f52f8f50220e4a0bee20ff5",
-      "files": {
-        "added": ["new-file.txt"],
-        "removed": [],
-        "modified": []
+  "metadata"   : {
+    "source"    : "github",
+    "authinfo"  : {"agent" : "agent_webhooks", "auth" : "auth_key"},
+    "timestamp" : 1434723490
+  },
+  "data": [
+    {
+      "type": "commit",
+      "timestamp": "2015-06-22T12:45:56+02:00",
+      "author": {
+        "name": "Test Test",
+        "email": "test@test.test",
+        "login": "test"
       },
-      "message": "Added new file",
-      "url": "https:\/\/github.com\/test\/test-hooks-repo\/commit\/8849ee0814c8ccd73f52f8f50220e4a0bee20ff5"
+      "message": "Test Test added commit: \"Added new file\"",
+      "extras": {
+        "id": "8849ee0814c8ccd73f52f8f50220e4a0bee20ff5",
+        "files": {
+          "added": ["new-file.txt"],
+          "removed": [],
+          "modified": []
+        },
+        "message": "Added new file",
+        "url": "https:\/\/github.com\/test\/test-hooks-repo\/commit\/8849ee0814c8ccd73f52f8f50220e4a0bee20ff5"
+      }
     }
-  }
- ]
+  ]
 }
 ```
 
