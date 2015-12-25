@@ -1,19 +1,20 @@
 server:
   build: ./run/docker/server
-  ports:
-   - "5100:80"
   volumes:
-   - .:/data/larmo-server/
+   - "./:/data/larmo-server/"
+   - .:/app
+   - ./:/app2/
+   - ./api/:/app3/
   environment:
    - MONGO_DB_URL=mongo
    - MONGO_DB_NAME=larmo-server
    - MONGO_DB_PORT=27017
-  links:
-   - mongo
+ # links:
+ #  - mongo
 
-mongo:
-  image: mongo
-  volumes:
-   - ./run/docker/mongo/data:/data/db
-  ports:
-    - "27018:27017"
+# mongo:
+#  image: mongo
+#  volumes:
+#   - "./run/docker/mongo/data:/data/db"
+#  ports:
+#    - "27018:27017"

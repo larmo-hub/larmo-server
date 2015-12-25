@@ -4,6 +4,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/larmo-hub/larmo-server/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/larmo-hub/larmo-server/?branch=master)
 [![Code Climate](https://codeclimate.com/github/larmo-hub/larmo-server/badges/gpa.svg)](https://codeclimate.com/github/larmo-hub/larmo-server)
 [![Test Coverage](https://codeclimate.com/github/larmo-hub/larmo-server/badges/coverage.svg)](https://codeclimate.com/github/larmo-hub/larmo-server/coverage)
+[![Docs](https://readthedocs.org/projects/larmo/badge/?version=latest)](http://docs.larmo.org/)
 
 ## What is it?
 
@@ -16,6 +17,10 @@ Each service that is source of data has a connector or bot that's gathering data
 ## Is it really working?
 
 Yes, you can check the webapp under http://larmo.herokuapp.com/ - it's currently connected to our Github repo.
+
+## Documentation
+
+Documentation for projects hosted on [readthedocs.org](https://readthedocs.org) is available on the [docs.larmo.org](http://docs.larmo.org).
 
 ## Public API
 
@@ -31,21 +36,55 @@ GET /latestMessages
 GET /availableSources
 ```
 
-## How to run *Larmo Server*
+## Requirements
 
-### Using Docker
+- MongoDb
 
-Navigate from command line to *Larmo Server* directory and run:
+## Installation guide
 
-```bash
-$: docker-compose up -d
-```
+You can start application in two ways (thanks Docker and Vagrant).
 
-Access to *Larmo Server*:
+### Docker
 
-- [http://localhost:5100/](http://localhost:5100/)
+* Linux
 
-### Using Vagrant
+    ```bash
+    $: sudo docker build -t larmo-server .
+    $: sudo docker run -p 5100:80 -i -d -t -v $(pwd):/data/larmo-server larmo-server
+    ```
+
+    Access to *Larmo Server*:
+
+    - [http://localhost:5100](http://localhost:5100)
+
+* Windows
+
+    Prepare host for Windows:
+ 
+    ```bash
+    $: docker-machine start boot2docker-vm
+    $: eval "$(docker-machine env boot2docker-vm)"
+    ```
+ 
+    Get docker host ip (typically 192.168.99.100):
+
+    ```bash
+    $ docker-machine ip boot2docker-vm
+    192.168.99.100
+    ```
+
+    Run docker commands:
+
+    ```bash
+    $: docker build -t larmo-server .
+    $: docker run -p 5100:80 -i -d -t -v .:/data/larmo-server larmo-server
+    ```
+    
+    Access to *Larmo Server*:
+
+    - [http://192.168.99.100:5100](http://192.168.99.100:5100)
+
+### Vagrant
 
 Setup configuration file *config/parameters.php* (if a file does not exist then create it). Content:
 
